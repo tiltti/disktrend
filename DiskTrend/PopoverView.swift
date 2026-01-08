@@ -284,7 +284,7 @@ struct TrendView: View {
                 }
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: 4)) { _ in
-                        AxisValueLabel(format: .dateTime.day())
+                        AxisValueLabel(format: .dateTime.day().month(.defaultDigits))
                             .font(.caption2)
                     }
                 }
