@@ -217,6 +217,7 @@ struct ChartDataPoint: Identifiable {
     let id = UUID()
     let timestamp: Date
     let freeGB: Double
+    let isForecast: Bool
 }
 
 struct TrendView: View {
@@ -229,11 +230,11 @@ struct TrendView: View {
             HStack(spacing: 6) {
                 Image(systemName: trendIcon)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(trendColor)
+                    .foregroundColor(statusColor)
 
                 Text(trend.localizedDescription)
                     .font(.system(.body, design: .rounded, weight: .medium))
-                    .foregroundColor(trendColor)
+                    .foregroundColor(statusColor)
 
                 Spacer()
 
@@ -248,31 +249,45 @@ struct TrendView: View {
                 }
             }
 
-            // Chart
-            if chartData.count >= 2 {
-                Chart(chartData) { point in
-                    AreaMark(
-                        x: .value("Time", point.timestamp),
-                        y: .value("Free", point.freeGB)
-                    )
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [trendColor.opacity(0.3), trendColor.opacity(0.05)],
-                            startPoint: .top,
-                            endPoint: .bottom
+            // Chart with forecast
+            if allChartData.count >= 2 {
+                Chart {
+                    // Historical data - solid line
+                    ForEach(historicalData) { point in
+                        LineMark(
+                            x: .value("Time", point.timestamp),
+                            y: .value("Free", point.freeGB)
                         )
-                    )
+                        .foregroundStyle(statusColor)
+                        .lineStyle(StrokeStyle(lineWidth: 2))
+                    }
 
-                    LineMark(
-                        x: .value("Time", point.timestamp),
-                        y: .value("Free", point.freeGB)
-                    )
-                    .foregroundStyle(trendColor)
-                    .lineStyle(StrokeStyle(lineWidth: 2))
+                    // Forecast data - dashed line
+                    ForEach(forecastData) { point in
+                        LineMark(
+                            x: .value("Time", point.timestamp),
+                            y: .value("Free", point.freeGB)
+                        )
+                        .foregroundStyle(forecastColor.opacity(0.7))
+                        .lineStyle(StrokeStyle(lineWidth: 2, dash: [5, 3]))
+                    }
+
+                    // Forecast label
+                    if let firstForecast = forecastData.first {
+                        RuleMark(x: .value("Now", firstForecast.timestamp))
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                            .lineStyle(StrokeStyle(lineWidth: 1, dash: [2, 2]))
+                            .annotation(position: .top, alignment: .leading) {
+                                Text(String(localized: "trend.forecast"))
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 4)
+                            }
+                    }
                 }
                 .chartXAxis {
-                    AxisMarks(values: .automatic(desiredCount: 4)) { value in
-                        AxisValueLabel(format: .dateTime.hour())
+                    AxisMarks(values: .automatic(desiredCount: 5)) { value in
+                        AxisValueLabel(format: .dateTime.day().month(.abbreviated))
                             .font(.caption2)
                     }
                 }
@@ -287,7 +302,7 @@ struct TrendView: View {
                     }
                 }
                 .chartYScale(domain: yAxisDomain)
-                .frame(height: 60)
+                .frame(height: 50)
             }
 
             // Footer info
@@ -308,21 +323,60 @@ struct TrendView: View {
         .cornerRadius(8)
     }
 
-    private var chartData: [ChartDataPoint] {
+    private var historicalData: [ChartDataPoint] {
         snapshots.map { snapshot in
             ChartDataPoint(
                 timestamp: snapshot.timestamp,
-                freeGB: Double(snapshot.freeBytes) / 1_000_000_000
+                freeGB: Double(snapshot.freeBytes) / 1_000_000_000,
+                isForecast: false
             )
         }
     }
 
+    private var forecastData: [ChartDataPoint] {
+        guard let lastSnapshot = snapshots.last else { return [] }
+
+        let lastFreeGB = Double(lastSnapshot.freeBytes) / 1_000_000_000
+        let gbPerDay = Double(trend.bytesPerDay) / 1_000_000_000
+
+        var forecast: [ChartDataPoint] = []
+
+        // Start forecast from last data point
+        forecast.append(ChartDataPoint(
+            timestamp: lastSnapshot.timestamp,
+            freeGB: lastFreeGB,
+            isForecast: true
+        ))
+
+        // Add 7 days of forecast
+        for day in 1...7 {
+            let forecastDate = Calendar.current.date(byAdding: .day, value: day, to: lastSnapshot.timestamp) ?? lastSnapshot.timestamp
+            let forecastGB = max(0, lastFreeGB - (gbPerDay * Double(day)))
+
+            forecast.append(ChartDataPoint(
+                timestamp: forecastDate,
+                freeGB: forecastGB,
+                isForecast: true
+            ))
+
+            // Stop if disk would be full
+            if forecastGB <= 0 { break }
+        }
+
+        return forecast
+    }
+
+    private var allChartData: [ChartDataPoint] {
+        historicalData + forecastData
+    }
+
     private var yAxisDomain: ClosedRange<Double> {
-        guard let minVal = chartData.map({ $0.freeGB }).min(),
-              let maxVal = chartData.map({ $0.freeGB }).max() else {
+        let allData = allChartData
+        guard let minVal = allData.map({ $0.freeGB }).min(),
+              let maxVal = allData.map({ $0.freeGB }).max() else {
             return 0...100
         }
-        let padding = max((maxVal - minVal) * 0.1, 1)
+        let padding = max((maxVal - minVal) * 0.1, 5)
         return max(0, minVal - padding)...(maxVal + padding)
     }
 
@@ -336,18 +390,24 @@ struct TrendView: View {
         }
     }
 
-    private var trendColor: Color {
-        if trend.bytesPerDay > 1_000_000_000 {
-            return .red
-        } else if trend.bytesPerDay > 100_000_000 {
-            return .orange
-        } else if trend.bytesPerDay > 1_000_000 {
-            return .yellow
-        } else if trend.bytesPerDay < -1_000_000 {
-            return .green
-        } else {
-            return .gray
-        }
+    // Color based on current disk status (like the volume indicator)
+    private var statusColor: Color {
+        guard let lastSnapshot = snapshots.last else { return .gray }
+        let freePercent = Double(lastSnapshot.freeBytes) / Double(lastSnapshot.totalBytes) * 100
+
+        if freePercent < 5 { return .red }
+        if freePercent < 10 { return .orange }
+        if freePercent < 20 { return .yellow }
+        return .green
+    }
+
+    // Forecast line color based on predicted outcome
+    private var forecastColor: Color {
+        guard let days = trend.daysUntilFull else { return statusColor }
+        if days < 7 { return .red }
+        if days < 14 { return .orange }
+        if days < 30 { return .yellow }
+        return statusColor
     }
 }
 

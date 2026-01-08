@@ -28,6 +28,7 @@
 "trend.fullIn24h" = "Levy täynnä alle 24 tunnissa!";
 "trend.fullInDays" = "Levy täynnä noin %d päivässä";
 "trend.fullInDaysNormal" = "Levy täynnä noin %d päivässä";
+"trend.forecast" = "Ennuste";
 
 /* Settings - Tabs */
 "settings.general" = "Yleiset";

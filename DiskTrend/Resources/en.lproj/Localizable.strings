@@ -28,6 +28,7 @@
 "trend.fullIn24h" = "Disk full in less than 24 hours!";
 "trend.fullInDays" = "Disk full in about %d days";
 "trend.fullInDaysNormal" = "Disk full in about %d days";
+"trend.forecast" = "Forecast";
 
 /* Settings - Tabs */
 "settings.general" = "General";

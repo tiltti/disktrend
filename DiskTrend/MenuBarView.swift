@@ -36,6 +36,9 @@ struct MenuBarView: View {
                 }
             }
         }
+        .onAppear {
+            print("[MenuBarView] displayMode: \(diskMonitor.displayMode), volumes: \(diskMonitor.volumes.count)")
+        }
     }
 
     private var diskGaugeImage: NSImage {
