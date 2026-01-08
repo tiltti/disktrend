@@ -29,6 +29,11 @@ struct PopoverView: View {
                     .padding()
             }
 
+            // Trendi
+            if let trend = diskMonitor.trend {
+                TrendView(trend: trend)
+            }
+
             Divider()
 
             // Toiminnot
@@ -161,6 +166,77 @@ struct StatView: View {
                 .foregroundColor(.secondary)
             Text(value)
                 .fontWeight(highlight ? .semibold : .regular)
+        }
+    }
+}
+
+struct TrendView: View {
+    let trend: TrendInfo
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Image(systemName: trendIcon)
+                    .foregroundColor(trendColor)
+                Text("Trendi (\(trend.periodHours)h)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Muutos")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(trend.trendDescription)
+                        .font(.system(.caption, design: .monospaced, weight: .medium))
+                        .foregroundColor(trendColor)
+                }
+
+                if let warning = trend.fullWarning {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Arvio")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text(warning)
+                            .font(.caption)
+                            .foregroundColor(trend.daysUntilFull ?? 100 < 7 ? .red : .secondary)
+                    }
+                }
+
+                Spacer()
+
+                Text("\(trend.dataPoints) mittausta")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(10)
+        .background(Color.blue.opacity(0.05))
+        .cornerRadius(8)
+    }
+
+    private var trendIcon: String {
+        if trend.bytesPerDay > 1_000_000 { // > 1 MB/päivä vähenee
+            return "arrow.down.circle.fill"
+        } else if trend.bytesPerDay < -1_000_000 { // > 1 MB/päivä kasvaa
+            return "arrow.up.circle.fill"
+        } else {
+            return "equal.circle.fill"
+        }
+    }
+
+    private var trendColor: Color {
+        if trend.bytesPerDay > 1_000_000_000 { // > 1 GB/päivä vähenee
+            return .red
+        } else if trend.bytesPerDay > 100_000_000 { // > 100 MB/päivä vähenee
+            return .orange
+        } else if trend.bytesPerDay > 1_000_000 { // > 1 MB/päivä vähenee
+            return .yellow
+        } else if trend.bytesPerDay < -1_000_000 { // kasvaa
+            return .green
+        } else {
+            return .gray
         }
     }
 }

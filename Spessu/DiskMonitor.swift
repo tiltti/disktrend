@@ -50,13 +50,26 @@ class DiskMonitor: ObservableObject {
     @Published var volumes: [VolumeInfo] = []
     @Published var primaryVolume: VolumeInfo?
     @Published var lastUpdate: Date = Date()
+    @Published var trend: TrendInfo?
 
     private var timer: Timer?
+    private var snapshotTimer: Timer?
     private var updateInterval: TimeInterval = 30 // sekuntia
+    private var snapshotInterval: TimeInterval = 300 // 5 minuuttia
+
+    var historyManager: DiskHistoryManager?
 
     init() {
         refresh()
         startMonitoring()
+        // Historia alustetaan viiveellä
+        Task {
+            try? await Task.sleep(for: .seconds(2))
+            await MainActor.run {
+                self.historyManager = DiskHistoryManager()
+                self.saveSnapshot()
+            }
+        }
     }
 
     func startMonitoring() {
@@ -66,17 +79,39 @@ class DiskMonitor: ObservableObject {
                 self?.refresh()
             }
         }
+
+        // Snapshot-ajastin (5 min välein)
+        snapshotTimer?.invalidate()
+        snapshotTimer = Timer.scheduledTimer(withTimeInterval: snapshotInterval, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.saveSnapshot()
+            }
+        }
     }
 
     func stopMonitoring() {
         timer?.invalidate()
         timer = nil
+        snapshotTimer?.invalidate()
+        snapshotTimer = nil
     }
 
     func refresh() {
         volumes = getAllVolumes()
         primaryVolume = volumes.first { $0.mountPoint == "/" }
         lastUpdate = Date()
+        refreshTrend()
+    }
+
+    func saveSnapshot() {
+        historyManager?.saveSnapshots(volumes: volumes)
+        historyManager?.cleanupOldSnapshots()
+    }
+
+    func refreshTrend() {
+        guard let primary = primaryVolume, let history = historyManager else { return }
+        history.refreshTrend(for: primary.mountPoint)
+        trend = history.trend
     }
 
     private func getAllVolumes() -> [VolumeInfo] {

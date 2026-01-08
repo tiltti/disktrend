@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,8 @@
 		3844D4C76DEF0E4C468E7895 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C7C5D0780B9C240846EBE9B /* Assets.xcassets */; };
 		46036BF1E3C271603B9A84A8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05880C1A4AD1B6DE0193BF8D /* SettingsView.swift */; };
 		69F10220991ECB54AFAB19E7 /* SpessuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFD33A397B0D9B5D0A52A8 /* SpessuApp.swift */; };
+		9ECADAD50F3DF8D57F4C9CE9 /* DiskHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E388AA0472D71DF752CA099D /* DiskHistory.swift */; };
+		CC72856AF174EEE5275C4AE5 /* ColoredIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7C7E27F336003742BA874D /* ColoredIcon.swift */; };
 		D357766B9D560CFCB8F38E0A /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF94EE055EDCD8AA6D8F2E02 /* PopoverView.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +26,8 @@
 		9A3C84DE27ACEBF592F6E293 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		AABEB268D1A42046232041D6 /* Spessu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spessu.entitlements; sourceTree = "<group>"; };
 		CF94EE055EDCD8AA6D8F2E02 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		E388AA0472D71DF752CA099D /* DiskHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskHistory.swift; sourceTree = "<group>"; };
+		EB7C7E27F336003742BA874D /* ColoredIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredIcon.swift; sourceTree = "<group>"; };
 		FBB85D4F410DB993259F6B75 /* DiskMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -32,6 +36,8 @@
 			isa = PBXGroup;
 			children = (
 				3C7C5D0780B9C240846EBE9B /* Assets.xcassets */,
+				EB7C7E27F336003742BA874D /* ColoredIcon.swift */,
+				E388AA0472D71DF752CA099D /* DiskHistory.swift */,
 				FBB85D4F410DB993259F6B75 /* DiskMonitor.swift */,
 				10E1764A4F34304AB2013DCA /* Info.plist */,
 				9A3C84DE27ACEBF592F6E293 /* MenuBarView.swift */,
@@ -87,7 +93,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					D869FB8F9727FA5F712195D1 = {
 						DevelopmentTeam = "";
@@ -105,7 +111,6 @@
 			);
 			mainGroup = 9BE17D6D599DE2909084E5CB;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -130,6 +135,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC72856AF174EEE5275C4AE5 /* ColoredIcon.swift in Sources */,
+				9ECADAD50F3DF8D57F4C9CE9 /* DiskHistory.swift in Sources */,
 				22B253B8C4A3761541D0AB8B /* DiskMonitor.swift in Sources */,
 				018090CA9FF0C8F267299C16 /* MenuBarView.swift in Sources */,
 				D357766B9D560CFCB8F38E0A /* PopoverView.swift in Sources */,
@@ -148,6 +155,7 @@
 				CODE_SIGN_ENTITLEMENTS = Spessu/Spessu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Spessu/Info.plist;
@@ -168,6 +176,7 @@
 				CODE_SIGN_ENTITLEMENTS = Spessu/Spessu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Spessu/Info.plist;
@@ -185,7 +194,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = arm64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -217,9 +225,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -238,7 +248,7 @@
 				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -251,7 +261,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = arm64;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -283,9 +292,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
