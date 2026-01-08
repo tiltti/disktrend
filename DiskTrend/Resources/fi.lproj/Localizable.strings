@@ -29,13 +29,33 @@
 "trend.fullInDays" = "Levy täynnä noin %d päivässä";
 "trend.fullInDaysNormal" = "Levy täynnä noin %d päivässä";
 "trend.forecast" = "Ennuste";
+"trend.historyDays %lld" = "Historia: %lld päivää";
+
+/* Chart Period */
+"chart.period.7days" = "7 päivää";
+"chart.period.14days" = "14 päivää";
+"chart.period.30days" = "30 päivää";
 
 /* Settings - Tabs */
 "settings.general" = "Yleiset";
 "settings.alerts" = "Hälytykset";
+"settings.info" = "Tiedot";
 "settings.about" = "Tietoja";
 
+/* Settings - Info */
+"info.measurements" = "Mittauksia (24h)";
+"info.volumes" = "Seurattavat levyt";
+"info.trendPeriod" = "Trendijakso";
+"info.dataPoints" = "Datapisteitä";
+"info.firstMeasurement" = "Ensimmäinen mittaus";
+"info.lastMeasurement" = "Viimeisin mittaus";
+
 /* Settings - General */
+"settings.appearance" = "Ulkoasu:";
+"appearance.system" = "Järjestelmä";
+"appearance.light" = "Vaalea";
+"appearance.dark" = "Tumma";
+"settings.chartPeriod" = "Kaavion jakso:";
 "settings.iconStyle" = "Ikonin tyyli:";
 "settings.updateInterval" = "Päivitysväli:";
 

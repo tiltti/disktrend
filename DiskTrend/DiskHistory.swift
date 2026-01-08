@@ -101,6 +101,41 @@ class DiskHistoryManager: ObservableObject {
         }
     }
 
+    /// Get snapshots for a specific number of days
+    func getSnapshots(for mountPoint: String, days: Int) -> [DiskSnapshot] {
+        return getSnapshots(for: mountPoint, hours: days * 24)
+    }
+
+    /// Get aggregated snapshots for chart display (one per hour for longer periods)
+    func getAggregatedSnapshots(for mountPoint: String, days: Int) -> [DiskSnapshot] {
+        let allSnapshots = getSnapshots(for: mountPoint, days: days)
+
+        // For short periods (3 days or less), return all data
+        if days <= 3 {
+            return allSnapshots
+        }
+
+        // For longer periods, aggregate to hourly averages
+        var hourlySnapshots: [DiskSnapshot] = []
+        let calendar = Calendar.current
+
+        // Group by hour
+        var grouped: [Date: [DiskSnapshot]] = [:]
+        for snapshot in allSnapshots {
+            let hourStart = calendar.date(from: calendar.dateComponents([.year, .month, .day, .hour], from: snapshot.timestamp)) ?? snapshot.timestamp
+            grouped[hourStart, default: []].append(snapshot)
+        }
+
+        // Take the last snapshot from each hour
+        for (_, snapshots) in grouped.sorted(by: { $0.key < $1.key }) {
+            if let last = snapshots.last {
+                hourlySnapshots.append(last)
+            }
+        }
+
+        return hourlySnapshots.sorted { $0.timestamp < $1.timestamp }
+    }
+
     /// Calculate trend for primary volume
     func calculateTrend(for mountPoint: String) -> TrendInfo? {
         let snapshots = getSnapshots(for: mountPoint, hours: 24)
@@ -140,11 +175,11 @@ class DiskHistoryManager: ObservableObject {
         recentSnapshots = getSnapshots(for: mountPoint, hours: 24)
     }
 
-    /// Clean up old snapshots (older than 7 days)
+    /// Clean up old snapshots (older than 30 days)
     func cleanupOldSnapshots() {
         guard let context = modelContext else { return }
 
-        let cutoffDate = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+        let cutoffDate = Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()
 
         let predicate = #Predicate<DiskSnapshot> { snapshot in
             snapshot.timestamp < cutoffDate

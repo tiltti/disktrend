@@ -29,13 +29,33 @@
 "trend.fullInDays" = "Disk full in about %d days";
 "trend.fullInDaysNormal" = "Disk full in about %d days";
 "trend.forecast" = "Forecast";
+"trend.historyDays %lld" = "History: %lld days";
+
+/* Chart Period */
+"chart.period.7days" = "7 days";
+"chart.period.14days" = "14 days";
+"chart.period.30days" = "30 days";
 
 /* Settings - Tabs */
 "settings.general" = "General";
 "settings.alerts" = "Alerts";
+"settings.info" = "Info";
 "settings.about" = "About";
 
+/* Settings - Info */
+"info.measurements" = "Measurements (24h)";
+"info.volumes" = "Tracked volumes";
+"info.trendPeriod" = "Trend period";
+"info.dataPoints" = "Data points";
+"info.firstMeasurement" = "First measurement";
+"info.lastMeasurement" = "Last measurement";
+
 /* Settings - General */
+"settings.appearance" = "Appearance:";
+"appearance.system" = "System";
+"appearance.light" = "Light";
+"appearance.dark" = "Dark";
+"settings.chartPeriod" = "Chart period:";
 "settings.iconStyle" = "Icon style:";
 "settings.updateInterval" = "Update interval:";
 

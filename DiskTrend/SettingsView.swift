@@ -28,14 +28,55 @@ struct SettingsView: View {
                 Label(L10n.settingsAlerts, systemImage: "bell")
             }
 
+            InfoView(diskMonitor: diskMonitor)
+            .tabItem {
+                Label(L10n.settingsInfo, systemImage: "chart.bar")
+            }
+
             AboutView()
             .tabItem {
                 Label(L10n.settingsAbout, systemImage: "info.circle")
             }
         }
-        .frame(width: 450, height: 250)
+        .frame(width: 450, height: 280)
         .onAppear {
             launchAtLogin = SMAppService.mainApp.status == .enabled
+        }
+    }
+}
+
+enum ChartPeriod: Int, CaseIterable {
+    case days7 = 7
+    case days14 = 14
+    case days30 = 30
+
+    var name: String {
+        switch self {
+        case .days7: return String(localized: "chart.period.7days")
+        case .days14: return String(localized: "chart.period.14days")
+        case .days30: return String(localized: "chart.period.30days")
+        }
+    }
+}
+
+enum AppearanceMode: Int, CaseIterable {
+    case system = 0
+    case light = 1
+    case dark = 2
+
+    var name: String {
+        switch self {
+        case .system: return String(localized: "appearance.system")
+        case .light: return String(localized: "appearance.light")
+        case .dark: return String(localized: "appearance.dark")
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light: return .light
+        case .dark: return .dark
         }
     }
 }
@@ -46,9 +87,23 @@ struct GeneralSettingsView: View {
     @Binding var launchAtLogin: Bool
     @AppStorage("decimalPlaces") private var decimalPlaces: Int = 1
     @AppStorage("iconStyle") private var iconStyle: Int = 0
+    @AppStorage("appearanceMode") private var appearanceMode: Int = 0
+    @AppStorage("chartPeriod") private var chartPeriod: Int = 14
 
     var body: some View {
         Form {
+            Picker(L10n.settingsAppearance, selection: $appearanceMode) {
+                ForEach(AppearanceMode.allCases, id: \.rawValue) { mode in
+                    Text(mode.name).tag(mode.rawValue)
+                }
+            }
+
+            Picker(L10n.settingsChartPeriod, selection: $chartPeriod) {
+                ForEach(ChartPeriod.allCases, id: \.rawValue) { period in
+                    Text(period.name).tag(period.rawValue)
+                }
+            }
+
             Picker(L10n.settingsDisplayMode, selection: $displayMode) {
                 ForEach(MenuBarDisplayMode.allCases, id: \.rawValue) { mode in
                     Text(mode.name).tag(mode.rawValue)
@@ -114,6 +169,49 @@ struct ThresholdSettingsView: View {
             }
         }
         .padding()
+    }
+}
+
+struct InfoView: View {
+    @ObservedObject var diskMonitor: DiskMonitor
+
+    var body: some View {
+        Form {
+            VStack(alignment: .leading, spacing: 12) {
+                InfoRow(label: L10n.infoMeasurements, value: "\(diskMonitor.historyManager?.recentSnapshots.count ?? 0)")
+
+                InfoRow(label: L10n.infoVolumes, value: "\(diskMonitor.volumes.count)")
+
+                if let trend = diskMonitor.trend {
+                    InfoRow(label: L10n.infoTrendPeriod, value: "\(trend.periodHours)h")
+                    InfoRow(label: L10n.infoDataPoints, value: "\(trend.dataPoints)")
+                }
+
+                if let firstSnapshot = diskMonitor.historyManager?.recentSnapshots.first {
+                    InfoRow(label: L10n.infoFirstMeasurement, value: firstSnapshot.timestamp.formatted(date: .abbreviated, time: .shortened))
+                }
+
+                if let lastSnapshot = diskMonitor.historyManager?.recentSnapshots.last {
+                    InfoRow(label: L10n.infoLastMeasurement, value: lastSnapshot.timestamp.formatted(date: .abbreviated, time: .shortened))
+                }
+            }
+        }
+        .padding()
+    }
+}
+
+struct InfoRow: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        HStack {
+            Text(label)
+                .foregroundColor(.secondary)
+            Spacer()
+            Text(value)
+                .fontWeight(.medium)
+        }
     }
 }
 

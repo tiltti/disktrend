@@ -4,6 +4,13 @@ import Charts
 
 struct PopoverView: View {
     @ObservedObject var diskMonitor: DiskMonitor
+    @AppStorage("chartPeriod") private var chartPeriod: Int = 14
+
+    private var chartSnapshots: [DiskSnapshot] {
+        guard let manager = diskMonitor.historyManager,
+              let primary = diskMonitor.primaryVolume else { return [] }
+        return manager.getAggregatedSnapshots(for: primary.mountPoint, days: chartPeriod)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -32,7 +39,7 @@ struct PopoverView: View {
 
             // Trend
             if let trend = diskMonitor.trend {
-                TrendView(trend: trend, snapshots: diskMonitor.historyManager?.recentSnapshots ?? [])
+                TrendView(trend: trend, snapshots: chartSnapshots, chartPeriod: chartPeriod)
             }
 
             Divider()
@@ -223,6 +230,7 @@ struct ChartDataPoint: Identifiable {
 struct TrendView: View {
     let trend: TrendInfo
     let snapshots: [DiskSnapshot]
+    let chartPeriod: Int
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -250,18 +258,10 @@ struct TrendView: View {
             }
 
             // Chart with forecast
-            if historicalData.count >= 2 {
+            if historicalData.count >= 2 || forecastData.count >= 2 {
                 Chart {
                     // Historical data - solid line
-                    LineMark(
-                        x: .value("Time", historicalData.first!.timestamp),
-                        y: .value("Free", historicalData.first!.freeGB),
-                        series: .value("Series", "history")
-                    )
-                    .foregroundStyle(statusColor)
-                    .lineStyle(StrokeStyle(lineWidth: 2))
-
-                    ForEach(historicalData.dropFirst()) { point in
+                    ForEach(historicalData) { point in
                         LineMark(
                             x: .value("Time", point.timestamp),
                             y: .value("Free", point.freeGB),
@@ -269,6 +269,13 @@ struct TrendView: View {
                         )
                         .foregroundStyle(statusColor)
                         .lineStyle(StrokeStyle(lineWidth: 2))
+                    }
+
+                    // Now marker
+                    if let lastHistorical = historicalData.last {
+                        RuleMark(x: .value("Now", lastHistorical.timestamp))
+                            .foregroundStyle(Color.secondary.opacity(0.5))
+                            .lineStyle(StrokeStyle(lineWidth: 1))
                     }
 
                     // Forecast data - dashed line
@@ -283,7 +290,7 @@ struct TrendView: View {
                     }
                 }
                 .chartXAxis {
-                    AxisMarks(values: .automatic(desiredCount: 4)) { _ in
+                    AxisMarks(values: .automatic(desiredCount: 5)) { _ in
                         AxisValueLabel(format: .dateTime.day().month(.defaultDigits))
                             .font(.caption2)
                     }
@@ -299,20 +306,22 @@ struct TrendView: View {
                     }
                 }
                 .chartYScale(domain: yAxisDomain)
-                .frame(height: 50)
+                .frame(height: 60)
             }
 
             // Footer info
             HStack {
-                Text(L10n.trendTitle(trend.periodHours))
+                Text(String(localized: "trend.historyDays \(chartPeriod)"))
                     .font(.caption2)
                     .foregroundColor(.secondary)
 
                 Spacer()
 
-                Text("\(trend.dataPoints) pts")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
+                if !forecastData.isEmpty {
+                    Text(String(localized: "trend.forecast"))
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
             }
         }
         .padding(10)

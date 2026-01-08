@@ -48,9 +48,20 @@ enum L10n {
     // Settings - Tabs
     static let settingsGeneral = String(localized: "settings.general")
     static let settingsAlerts = String(localized: "settings.alerts")
+    static let settingsInfo = String(localized: "settings.info")
     static let settingsAbout = String(localized: "settings.about")
 
+    // Settings - Info
+    static let infoMeasurements = String(localized: "info.measurements")
+    static let infoVolumes = String(localized: "info.volumes")
+    static let infoTrendPeriod = String(localized: "info.trendPeriod")
+    static let infoDataPoints = String(localized: "info.dataPoints")
+    static let infoFirstMeasurement = String(localized: "info.firstMeasurement")
+    static let infoLastMeasurement = String(localized: "info.lastMeasurement")
+
     // Settings - General
+    static let settingsAppearance = String(localized: "settings.appearance")
+    static let settingsChartPeriod = String(localized: "settings.chartPeriod")
     static let settingsDisplayMode = String(localized: "settings.displayMode")
     static let settingsIconStyle = String(localized: "settings.iconStyle")
     static let settingsUpdateInterval = String(localized: "settings.updateInterval")
