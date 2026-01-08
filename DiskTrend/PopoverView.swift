@@ -300,7 +300,7 @@ struct TrendView: View {
 
                 Text("\(trend.dataPoints) pts")
                     .font(.caption2)
-                    .foregroundColor(.tertiary)
+                    .foregroundStyle(.tertiary)
             }
         }
         .padding(10)
