@@ -5,7 +5,7 @@ struct SpessuApp: App {
     @StateObject private var diskMonitor = DiskMonitor()
 
     init() {
-        print("🚀 Spessu käynnistyy...")
+        print("[Spessu] Starting...")
     }
 
     var body: some Scene {

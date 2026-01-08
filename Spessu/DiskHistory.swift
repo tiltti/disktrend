@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// Yksittäinen levytilan mittaus
+/// Single disk space measurement
 @Model
 final class DiskSnapshot {
     var timestamp: Date
@@ -21,7 +21,7 @@ final class DiskSnapshot {
         self.freeBytes = freeBytes
     }
 
-    /// Luo snapshot VolumeInfo:sta
+    /// Create snapshot from VolumeInfo
     convenience init(from volume: VolumeInfo) {
         self.init(
             timestamp: Date(),
@@ -33,7 +33,7 @@ final class DiskSnapshot {
     }
 }
 
-/// Historian hallinta
+/// History management
 @MainActor
 class DiskHistoryManager: ObservableObject {
     private var modelContainer: ModelContainer?
@@ -55,13 +55,13 @@ class DiskHistoryManager: ObservableObject {
             )
             modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
             modelContext = modelContainer?.mainContext
-            print("✅ SwiftData alustettu")
+            print("[SwiftData] Initialized successfully")
         } catch {
-            print("❌ SwiftData virhe: \(error)")
+            print("[SwiftData] Error: \(error)")
         }
     }
 
-    /// Tallenna snapshot kaikista levyistä
+    /// Save snapshots for all volumes
     func saveSnapshots(volumes: [VolumeInfo]) {
         guard let context = modelContext else { return }
 
@@ -72,13 +72,13 @@ class DiskHistoryManager: ObservableObject {
 
         do {
             try context.save()
-            print("💾 Tallennettu \(volumes.count) snapshotia")
+            print("[History] Saved \(volumes.count) snapshots")
         } catch {
-            print("❌ Tallennus virhe: \(error)")
+            print("[History] Save error: \(error)")
         }
     }
 
-    /// Hae viimeisimmät snapshotit tietylle levylle
+    /// Get recent snapshots for a specific volume
     func getSnapshots(for mountPoint: String, hours: Int = 24) -> [DiskSnapshot] {
         guard let context = modelContext else { return [] }
 
@@ -96,12 +96,12 @@ class DiskHistoryManager: ObservableObject {
         do {
             return try context.fetch(descriptor)
         } catch {
-            print("❌ Haku virhe: \(error)")
+            print("[History] Fetch error: \(error)")
             return []
         }
     }
 
-    /// Laske trendi päälevylle
+    /// Calculate trend for primary volume
     func calculateTrend(for mountPoint: String) -> TrendInfo? {
         let snapshots = getSnapshots(for: mountPoint, hours: 24)
 
@@ -114,10 +114,11 @@ class DiskHistoryManager: ObservableObject {
         let timeDiff = last.timestamp.timeIntervalSince(first.timestamp)
         guard timeDiff > 0 else { return nil }
 
-        let bytesDiff = first.freeBytes - last.freeBytes // positiivinen = tila vähenee
+        // positive = space decreasing
+        let bytesDiff = first.freeBytes - last.freeBytes
         let bytesPerHour = Double(bytesDiff) / (timeDiff / 3600)
 
-        // Arvio milloin täynnä
+        // Estimate when full
         var daysUntilFull: Double? = nil
         if bytesPerHour > 0 && last.freeBytes > 0 {
             let hoursUntilFull = Double(last.freeBytes) / bytesPerHour
@@ -133,13 +134,13 @@ class DiskHistoryManager: ObservableObject {
         )
     }
 
-    /// Päivitä trenditiedot
+    /// Refresh trend data
     func refreshTrend(for mountPoint: String) {
         trend = calculateTrend(for: mountPoint)
         recentSnapshots = getSnapshots(for: mountPoint, hours: 24)
     }
 
-    /// Siivoa vanhat snapshotit (yli 7 päivää)
+    /// Clean up old snapshots (older than 7 days)
     func cleanupOldSnapshots() {
         guard let context = modelContext else { return }
 
@@ -157,14 +158,14 @@ class DiskHistoryManager: ObservableObject {
                 context.delete(snapshot)
             }
             try context.save()
-            print("🧹 Siivottu \(oldSnapshots.count) vanhaa snapshotia")
+            print("[History] Cleaned up \(oldSnapshots.count) old snapshots")
         } catch {
-            print("❌ Siivous virhe: \(error)")
+            print("[History] Cleanup error: \(error)")
         }
     }
 }
 
-/// Trenditiedot
+/// Trend information
 struct TrendInfo {
     let bytesPerHour: Int64
     let bytesPerDay: Int64
@@ -172,16 +173,28 @@ struct TrendInfo {
     let dataPoints: Int
     let periodHours: Int
 
-    var isIncreasing: Bool { bytesPerDay < 0 } // negatiivinen = tila kasvaa (hyvä)
-    var isDecreasing: Bool { bytesPerDay > 0 } // positiivinen = tila vähenee (huono)
+    // negative = space increasing (good)
+    var isIncreasing: Bool { bytesPerDay < 0 }
+    // positive = space decreasing (bad)
+    var isDecreasing: Bool { bytesPerDay > 0 }
 
     var trendDescription: String {
         if bytesPerDay == 0 {
-            return "Vakaa"
+            return L10n.trendStable
         } else if bytesPerDay > 0 {
-            return "−\(bytesPerDay.formattedBytes)/päivä"
+            return "-\(bytesPerDay.formattedBytes)/\(String(localized: "day"))"
         } else {
-            return "+\(abs(bytesPerDay).formattedBytes)/päivä"
+            return "+\(abs(bytesPerDay).formattedBytes)/\(String(localized: "day"))"
+        }
+    }
+
+    var localizedDescription: String {
+        if bytesPerDay == 0 {
+            return L10n.trendStable
+        } else if bytesPerDay > 0 {
+            return "-" + L10n.trendPerDay(bytesPerDay.formattedBytes)
+        } else {
+            return "+" + L10n.trendPerDay(abs(bytesPerDay).formattedBytes)
         }
     }
 
@@ -189,11 +202,15 @@ struct TrendInfo {
         guard let days = daysUntilFull, days > 0 && days < 30 else { return nil }
 
         if days < 1 {
-            return "⚠️ Levy täynnä alle 24 tunnissa!"
+            return L10n.trendFullIn24h
         } else if days < 7 {
-            return "⚠️ Levy täynnä noin \(Int(days)) päivässä"
+            return L10n.trendFullInDays(Int(days))
         } else {
-            return "Levy täynnä noin \(Int(days)) päivässä"
+            return L10n.trendFullInDaysNormal(Int(days))
         }
+    }
+
+    var localizedWarning: String? {
+        fullWarning
     }
 }

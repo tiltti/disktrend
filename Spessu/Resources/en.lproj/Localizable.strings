@@ -1,0 +1,57 @@
+/* App */
+"app.name" = "Spessu";
+"app.description" = "Disk space monitor for macOS";
+"app.version" = "Version %@";
+
+/* Menu Bar */
+"menubar.unknown" = "--";
+
+/* Popover */
+"popover.title" = "Spessu";
+"popover.noVolumes" = "No volumes found";
+"popover.refresh" = "Refresh";
+"popover.settings" = "Settings";
+"popover.quit" = "Quit";
+
+/* Volume */
+"volume.total" = "Total";
+"volume.used" = "Used";
+"volume.free" = "Free";
+
+/* Trend */
+"trend.title" = "Trend (%dh)";
+"trend.change" = "Change";
+"trend.estimate" = "Estimate";
+"trend.stable" = "Stable";
+"trend.perDay" = "%@/day";
+"trend.measurements" = "%d measurements";
+"trend.fullIn24h" = "Disk full in less than 24 hours!";
+"trend.fullInDays" = "Disk full in about %d days";
+"trend.fullInDaysNormal" = "Disk full in about %d days";
+
+/* Settings - Tabs */
+"settings.general" = "General";
+"settings.alerts" = "Alerts";
+"settings.about" = "About";
+
+/* Settings - General */
+"settings.iconStyle" = "Icon style:";
+"settings.updateInterval" = "Update interval:";
+
+/* Icon styles */
+"icon.pie" = "Pie chart";
+"icon.battery" = "Battery";
+"icon.dot" = "Color dot";
+"icon.bar" = "Vertical bar";
+"settings.interval.10s" = "10 seconds";
+"settings.interval.30s" = "30 seconds";
+"settings.interval.1m" = "1 minute";
+"settings.interval.5m" = "5 minutes";
+"settings.showText" = "Show free space in menu bar";
+"settings.decimals" = "Decimal places:";
+"settings.launchAtLogin" = "Launch at login";
+
+/* Settings - Alerts */
+"settings.warningThreshold" = "Warning threshold (yellow): %d%% free";
+"settings.criticalThreshold" = "Critical threshold (red): %d%% free";
+"settings.thresholdDescription" = "When free space drops below these limits, the menu bar color changes.";

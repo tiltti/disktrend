@@ -1,0 +1,57 @@
+/* App */
+"app.name" = "Spessu";
+"app.description" = "Levytilan seurantasovellus macOS:lle";
+"app.version" = "Versio %@";
+
+/* Menu Bar */
+"menubar.unknown" = "--";
+
+/* Popover */
+"popover.title" = "Spessu";
+"popover.noVolumes" = "Ei levyjä löytynyt";
+"popover.refresh" = "Päivitä";
+"popover.settings" = "Asetukset";
+"popover.quit" = "Lopeta";
+
+/* Volume */
+"volume.total" = "Yhteensä";
+"volume.used" = "Käytetty";
+"volume.free" = "Vapaa";
+
+/* Trend */
+"trend.title" = "Trendi (%dh)";
+"trend.change" = "Muutos";
+"trend.estimate" = "Arvio";
+"trend.stable" = "Vakaa";
+"trend.perDay" = "%@/päivä";
+"trend.measurements" = "%d mittausta";
+"trend.fullIn24h" = "Levy täynnä alle 24 tunnissa!";
+"trend.fullInDays" = "Levy täynnä noin %d päivässä";
+"trend.fullInDaysNormal" = "Levy täynnä noin %d päivässä";
+
+/* Settings - Tabs */
+"settings.general" = "Yleiset";
+"settings.alerts" = "Hälytykset";
+"settings.about" = "Tietoja";
+
+/* Settings - General */
+"settings.iconStyle" = "Ikonin tyyli:";
+"settings.updateInterval" = "Päivitysväli:";
+
+/* Icon styles */
+"icon.pie" = "Piirakka";
+"icon.battery" = "Akku";
+"icon.dot" = "Väripallo";
+"icon.bar" = "Pystypalkki";
+"settings.interval.10s" = "10 sekuntia";
+"settings.interval.30s" = "30 sekuntia";
+"settings.interval.1m" = "1 minuutti";
+"settings.interval.5m" = "5 minuuttia";
+"settings.showText" = "Näytä vapaa tila menu barissa";
+"settings.decimals" = "Desimaaleja:";
+"settings.launchAtLogin" = "Käynnistä kirjautuessa";
+
+/* Settings - Alerts */
+"settings.warningThreshold" = "Varoitusraja (keltainen): %d%% vapaata";
+"settings.criticalThreshold" = "Kriittinen raja (punainen): %d%% vapaata";
+"settings.thresholdDescription" = "Kun vapaa tila laskee näiden rajojen alle, menu barin väri muuttuu.";

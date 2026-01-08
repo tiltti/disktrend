@@ -1,4 +1,5 @@
 import SwiftUI
+import ServiceManagement
 
 struct SettingsView: View {
     @ObservedObject var diskMonitor: DiskMonitor
@@ -6,7 +7,7 @@ struct SettingsView: View {
     @AppStorage("warningThreshold") private var warningThreshold: Double = 10
     @AppStorage("criticalThreshold") private var criticalThreshold: Double = 5
     @AppStorage("showTextInMenuBar") private var showTextInMenuBar: Bool = true
-    @AppStorage("launchAtLogin") private var launchAtLogin: Bool = false
+    @State private var launchAtLogin: Bool = false
 
     var body: some View {
         TabView {
@@ -16,7 +17,7 @@ struct SettingsView: View {
                 launchAtLogin: $launchAtLogin
             )
             .tabItem {
-                Label("Yleiset", systemImage: "gear")
+                Label(L10n.settingsGeneral, systemImage: "gear")
             }
 
             ThresholdSettingsView(
@@ -24,15 +25,18 @@ struct SettingsView: View {
                 criticalThreshold: $criticalThreshold
             )
             .tabItem {
-                Label("Hälytykset", systemImage: "bell")
+                Label(L10n.settingsAlerts, systemImage: "bell")
             }
 
             AboutView()
             .tabItem {
-                Label("Tietoja", systemImage: "info.circle")
+                Label(L10n.settingsAbout, systemImage: "info.circle")
             }
         }
         .frame(width: 450, height: 250)
+        .onAppear {
+            launchAtLogin = SMAppService.mainApp.status == .enabled
+        }
     }
 }
 
@@ -40,20 +44,44 @@ struct GeneralSettingsView: View {
     @Binding var updateInterval: Double
     @Binding var showTextInMenuBar: Bool
     @Binding var launchAtLogin: Bool
+    @AppStorage("decimalPlaces") private var decimalPlaces: Int = 1
+    @AppStorage("iconStyle") private var iconStyle: Int = 0
 
     var body: some View {
         Form {
-            Picker("Päivitysväli:", selection: $updateInterval) {
-                Text("10 sekuntia").tag(10.0)
-                Text("30 sekuntia").tag(30.0)
-                Text("1 minuutti").tag(60.0)
-                Text("5 minuuttia").tag(300.0)
+            Picker(L10n.settingsIconStyle, selection: $iconStyle) {
+                ForEach(IconStyle.allCases, id: \.rawValue) { style in
+                    Text(style.name).tag(style.rawValue)
+                }
             }
 
-            Toggle("Näytä vapaa tila menu barissa", isOn: $showTextInMenuBar)
+            Picker(L10n.settingsUpdateInterval, selection: $updateInterval) {
+                Text(L10n.settingsInterval10s).tag(10.0)
+                Text(L10n.settingsInterval30s).tag(30.0)
+                Text(L10n.settingsInterval1m).tag(60.0)
+                Text(L10n.settingsInterval5m).tag(300.0)
+            }
 
-            Toggle("Käynnistä kirjautuessa", isOn: $launchAtLogin)
-                .disabled(true) // TODO: Toteuta ServiceManagement-frameworkilla
+            Toggle(L10n.settingsShowText, isOn: $showTextInMenuBar)
+
+            Picker(L10n.settingsDecimals, selection: $decimalPlaces) {
+                Text("0").tag(0)
+                Text("1").tag(1)
+                Text("2").tag(2)
+            }
+
+            Toggle(L10n.settingsLaunchAtLogin, isOn: $launchAtLogin)
+                .onChange(of: launchAtLogin) { _, newValue in
+                    do {
+                        if newValue {
+                            try SMAppService.mainApp.register()
+                        } else {
+                            try SMAppService.mainApp.unregister()
+                        }
+                    } catch {
+                        print("Launch at login error: \(error)")
+                    }
+                }
         }
         .padding()
     }
@@ -67,16 +95,16 @@ struct ThresholdSettingsView: View {
         Form {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading) {
-                    Text("Varoitusraja (keltainen): \(Int(warningThreshold))% vapaata")
+                    Text(L10n.settingsWarningThreshold(Int(warningThreshold)))
                     Slider(value: $warningThreshold, in: 5...30, step: 1)
                 }
 
                 VStack(alignment: .leading) {
-                    Text("Kriittinen raja (punainen): \(Int(criticalThreshold))% vapaata")
+                    Text(L10n.settingsCriticalThreshold(Int(criticalThreshold)))
                     Slider(value: $criticalThreshold, in: 1...15, step: 1)
                 }
 
-                Text("Kun vapaa tila laskee näiden rajojen alle, menu barin väri muuttuu.")
+                Text(L10n.settingsThresholdDescription)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -92,14 +120,14 @@ struct AboutView: View {
                 .font(.system(size: 48))
                 .foregroundColor(.green)
 
-            Text("Spessu")
+            Text(L10n.appName)
                 .font(.title)
                 .fontWeight(.bold)
 
-            Text("Versio 1.0.0")
+            Text(L10n.appVersion("1.0.0"))
                 .foregroundColor(.secondary)
 
-            Text("Levytilan seurantasovellus macOS:lle")
+            Text(L10n.appDescription)
                 .multilineTextAlignment(.center)
 
             Spacer()

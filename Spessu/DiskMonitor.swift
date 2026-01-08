@@ -14,12 +14,22 @@ struct VolumeInfo: Identifiable, Equatable {
     var usedPercentage: Double { Double(usedBytes) / Double(totalBytes) * 100 }
     var freePercentage: Double { Double(freeBytes) / Double(totalBytes) * 100 }
 
-    var status: DiskStatus {
+    func status(warningThreshold: Double = 10, criticalThreshold: Double = 5) -> DiskStatus {
         let freePercent = freePercentage
-        if freePercent < 5 { return .critical }
-        if freePercent < 10 { return .warning }
-        if freePercent < 20 { return .caution }
+        if freePercent < criticalThreshold { return .critical }
+        if freePercent < warningThreshold { return .warning }
+        if freePercent < warningThreshold + 10 { return .caution }
         return .healthy
+    }
+
+    // Default status for legacy calls
+    var status: DiskStatus {
+        let warning = UserDefaults.standard.double(forKey: "warningThreshold")
+        let critical = UserDefaults.standard.double(forKey: "criticalThreshold")
+        return status(
+            warningThreshold: warning > 0 ? warning : 10,
+            criticalThreshold: critical > 0 ? critical : 5
+        )
     }
 
     static func == (lhs: VolumeInfo, rhs: VolumeInfo) -> Bool {
@@ -30,10 +40,10 @@ struct VolumeInfo: Identifiable, Equatable {
 }
 
 enum DiskStatus {
-    case healthy   // > 20% free - vihreä
-    case caution   // 10-20% free - keltainen
-    case warning   // 5-10% free - oranssi
-    case critical  // < 5% free - punainen
+    case healthy   // > 20% free - green
+    case caution   // 10-20% free - yellow
+    case warning   // 5-10% free - orange
+    case critical  // < 5% free - red
 
     var color: String {
         switch self {
@@ -51,25 +61,51 @@ class DiskMonitor: ObservableObject {
     @Published var primaryVolume: VolumeInfo?
     @Published var lastUpdate: Date = Date()
     @Published var trend: TrendInfo?
+    @Published var showTextInMenuBar: Bool = true
 
     private var timer: Timer?
     private var snapshotTimer: Timer?
-    private var updateInterval: TimeInterval = 30 // sekuntia
-    private var snapshotInterval: TimeInterval = 300 // 5 minuuttia
+    private var snapshotInterval: TimeInterval = 300 // 5 minutes
+
+    var updateInterval: TimeInterval {
+        let interval = UserDefaults.standard.double(forKey: "updateInterval")
+        return interval > 0 ? interval : 30
+    }
 
     var historyManager: DiskHistoryManager?
 
     init() {
-        refresh()
+        showTextInMenuBar = UserDefaults.standard.object(forKey: "showTextInMenuBar") as? Bool ?? true
+        // Load data synchronously immediately
+        volumes = getAllVolumes()
+        primaryVolume = volumes.first { $0.mountPoint == "/" }
+        lastUpdate = Date()
         startMonitoring()
-        // Historia alustetaan viiveellä
-        Task {
-            try? await Task.sleep(for: .seconds(2))
+        // Initialize history in background (no UI delay)
+        Task.detached(priority: .background) {
+            let manager = await DiskHistoryManager()
             await MainActor.run {
-                self.historyManager = DiskHistoryManager()
+                self.historyManager = manager
                 self.saveSnapshot()
+                self.refreshTrend()
             }
         }
+        // Listen for settings changes
+        NotificationCenter.default.addObserver(
+            forName: UserDefaults.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in
+                self?.handleSettingsChange()
+            }
+        }
+    }
+
+    private func handleSettingsChange() {
+        showTextInMenuBar = UserDefaults.standard.object(forKey: "showTextInMenuBar") as? Bool ?? true
+        // Restart timer with new interval
+        startMonitoring()
     }
 
     func startMonitoring() {
@@ -80,7 +116,7 @@ class DiskMonitor: ObservableObject {
             }
         }
 
-        // Snapshot-ajastin (5 min välein)
+        // Snapshot timer (every 5 min)
         snapshotTimer?.invalidate()
         snapshotTimer = Timer.scheduledTimer(withTimeInterval: snapshotInterval, repeats: true) { [weak self] _ in
             Task { @MainActor in
@@ -118,7 +154,7 @@ class DiskMonitor: ObservableObject {
         let fileManager = FileManager.default
         var result: [VolumeInfo] = []
 
-        // Hae kaikki mountatut volyymit
+        // Get all mounted volumes
         guard let mountedVolumeURLs = fileManager.mountedVolumeURLs(
             includingResourceValuesForKeys: [
                 .volumeNameKey,
@@ -159,11 +195,11 @@ class DiskMonitor: ObservableObject {
 
                 result.append(volumeInfo)
             } catch {
-                print("Virhe volyymin tietojen haussa: \(error)")
+                print("[DiskMonitor] Error fetching volume info: \(error)")
             }
         }
 
-        // Järjestä: päälevy ensin, sitten sisäiset, sitten ulkoiset
+        // Sort: primary disk first, then internal, then external
         return result.sorted { lhs, rhs in
             if lhs.mountPoint == "/" { return true }
             if rhs.mountPoint == "/" { return false }
@@ -173,24 +209,28 @@ class DiskMonitor: ObservableObject {
     }
 }
 
-// MARK: - Formatointi
+// MARK: - Formatting
 extension Int64 {
     var formattedBytes: String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useGB, .useTB]
-        formatter.countStyle = .file
-        formatter.includesUnit = true
-        formatter.isAdaptive = true
-        return formatter.string(fromByteCount: self)
+        formattedBytes(decimals: nil)
     }
 
     var formattedBytesShort: String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useGB, .useTB]
-        formatter.countStyle = .file
-        formatter.includesUnit = true
-        formatter.isAdaptive = true
-        formatter.zeroPadsFractionDigits = false
-        return formatter.string(fromByteCount: self)
+        let decimals = UserDefaults.standard.integer(forKey: "decimalPlaces")
+        return formattedBytes(decimals: decimals)
+    }
+
+    func formattedBytes(decimals: Int?) -> String {
+        let bytes = Double(self)
+        let gb = bytes / 1_000_000_000
+        let tb = bytes / 1_000_000_000_000
+
+        let decimalPlaces = decimals ?? 1
+
+        if tb >= 1 {
+            return String(format: "%.\(decimalPlaces)f TB", tb)
+        } else {
+            return String(format: "%.\(decimalPlaces)f GB", gb)
+        }
     }
 }

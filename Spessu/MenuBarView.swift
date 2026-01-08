@@ -6,21 +6,28 @@ struct MenuBarView: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            // Väripallo statuksen mukaan
-            Image(nsImage: statusDotImage)
+            // Status indicator icon
+            Image(nsImage: diskGaugeImage)
 
-            // Vapaa tila tekstinä
-            if let primary = diskMonitor.primaryVolume {
-                Text(primary.freeBytes.formattedBytesShort)
-                    .monospacedDigit()
-            } else {
-                Text("--")
+            // Free space as text (if enabled in settings)
+            if diskMonitor.showTextInMenuBar {
+                if let primary = diskMonitor.primaryVolume {
+                    Text(primary.freeBytes.formattedBytesShort)
+                        .monospacedDigit()
+                } else {
+                    Text("--")
+                }
             }
         }
     }
 
-    private var statusDotImage: NSImage {
-        let status = diskMonitor.primaryVolume?.status ?? .healthy
-        return ColoredIcon.statusDot(for: status, size: 12)
+    private var diskGaugeImage: NSImage {
+        guard let primary = diskMonitor.primaryVolume else {
+            return ColoredIcon.icon(usedPercentage: 0, status: .healthy)
+        }
+        return ColoredIcon.icon(
+            usedPercentage: primary.usedPercentage,
+            status: primary.status
+        )
     }
 }
