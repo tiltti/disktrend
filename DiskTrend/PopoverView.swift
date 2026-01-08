@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import Charts
 
 struct PopoverView: View {
     @ObservedObject var diskMonitor: DiskMonitor
@@ -31,7 +32,7 @@ struct PopoverView: View {
 
             // Trend
             if let trend = diskMonitor.trend {
-                TrendView(trend: trend)
+                TrendView(trend: trend, snapshots: diskMonitor.historyManager?.recentSnapshots ?? [])
             }
 
             Divider()
@@ -211,59 +212,127 @@ struct StatView: View {
     }
 }
 
+/// Data point for chart
+struct ChartDataPoint: Identifiable {
+    let id = UUID()
+    let timestamp: Date
+    let freeGB: Double
+}
+
 struct TrendView: View {
     let trend: TrendInfo
+    let snapshots: [DiskSnapshot]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
+        VStack(alignment: .leading, spacing: 8) {
+            // Header with trend indicator
+            HStack(spacing: 6) {
                 Image(systemName: trendIcon)
+                    .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(trendColor)
-                Text(L10n.trendTitle(trend.periodHours))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
 
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L10n.trendChange)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    Text(trend.localizedDescription)
-                        .font(.system(.caption, design: .monospaced, weight: .medium))
-                        .foregroundColor(trendColor)
-                }
-
-                if let warning = trend.localizedWarning {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(L10n.trendEstimate)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        Text(warning)
-                            .font(.caption)
-                            .foregroundColor(trend.daysUntilFull ?? 100 < 7 ? .red : .secondary)
-                    }
-                }
+                Text(trend.localizedDescription)
+                    .font(.system(.body, design: .rounded, weight: .medium))
+                    .foregroundColor(trendColor)
 
                 Spacer()
 
-                Text(L10n.trendMeasurements(trend.dataPoints))
+                if let warning = trend.localizedWarning {
+                    Text(warning)
+                        .font(.caption)
+                        .foregroundColor(trend.daysUntilFull ?? 100 < 7 ? .red : .orange)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background((trend.daysUntilFull ?? 100 < 7 ? Color.red : Color.orange).opacity(0.15))
+                        .cornerRadius(4)
+                }
+            }
+
+            // Chart
+            if chartData.count >= 2 {
+                Chart(chartData) { point in
+                    AreaMark(
+                        x: .value("Time", point.timestamp),
+                        y: .value("Free", point.freeGB)
+                    )
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [trendColor.opacity(0.3), trendColor.opacity(0.05)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+
+                    LineMark(
+                        x: .value("Time", point.timestamp),
+                        y: .value("Free", point.freeGB)
+                    )
+                    .foregroundStyle(trendColor)
+                    .lineStyle(StrokeStyle(lineWidth: 2))
+                }
+                .chartXAxis {
+                    AxisMarks(values: .automatic(desiredCount: 4)) { value in
+                        AxisValueLabel(format: .dateTime.hour())
+                            .font(.caption2)
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks(position: .leading, values: .automatic(desiredCount: 3)) { value in
+                        AxisValueLabel {
+                            if let gb = value.as(Double.self) {
+                                Text("\(Int(gb))G")
+                                    .font(.caption2)
+                            }
+                        }
+                    }
+                }
+                .chartYScale(domain: yAxisDomain)
+                .frame(height: 60)
+            }
+
+            // Footer info
+            HStack {
+                Text(L10n.trendTitle(trend.periodHours))
                     .font(.caption2)
                     .foregroundColor(.secondary)
+
+                Spacer()
+
+                Text("\(trend.dataPoints) pts")
+                    .font(.caption2)
+                    .foregroundColor(.tertiary)
             }
         }
         .padding(10)
-        .background(Color.blue.opacity(0.05))
+        .background(Color.primary.opacity(0.03))
         .cornerRadius(8)
+    }
+
+    private var chartData: [ChartDataPoint] {
+        snapshots.map { snapshot in
+            ChartDataPoint(
+                timestamp: snapshot.timestamp,
+                freeGB: Double(snapshot.freeBytes) / 1_000_000_000
+            )
+        }
+    }
+
+    private var yAxisDomain: ClosedRange<Double> {
+        guard let minVal = chartData.map({ $0.freeGB }).min(),
+              let maxVal = chartData.map({ $0.freeGB }).max() else {
+            return 0...100
+        }
+        let padding = max((maxVal - minVal) * 0.1, 1)
+        return max(0, minVal - padding)...(maxVal + padding)
     }
 
     private var trendIcon: String {
         if trend.bytesPerDay > 1_000_000 {
-            return "arrow.down.circle.fill"
+            return "arrow.down.right"
         } else if trend.bytesPerDay < -1_000_000 {
-            return "arrow.up.circle.fill"
+            return "arrow.up.right"
         } else {
-            return "equal.circle.fill"
+            return "arrow.right"
         }
     }
 
