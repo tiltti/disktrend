@@ -1,5 +1,5 @@
 /* App */
-"app.name" = "Spessu";
+"app.name" = "DiskTrend";
 "app.description" = "Levytilan seurantasovellus macOS:lle";
 "app.version" = "Versio %@";
 
@@ -7,7 +7,7 @@
 "menubar.unknown" = "--";
 
 /* Popover */
-"popover.title" = "Spessu";
+"popover.title" = "DiskTrend";
 "popover.noVolumes" = "Ei levyjä löytynyt";
 "popover.refresh" = "Päivitä";
 "popover.settings" = "Asetukset";

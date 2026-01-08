@@ -1,11 +1,11 @@
 import SwiftUI
 
 @main
-struct SpessuApp: App {
+struct DiskTrendApp: App {
     @StateObject private var diskMonitor = DiskMonitor()
 
     init() {
-        print("[Spessu] Starting...")
+        print("[DiskTrend] Starting...")
     }
 
     var body: some Scene {

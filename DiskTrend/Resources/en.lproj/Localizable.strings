@@ -1,5 +1,5 @@
 /* App */
-"app.name" = "Spessu";
+"app.name" = "DiskTrend";
 "app.description" = "Disk space monitor for macOS";
 "app.version" = "Version %@";
 
@@ -7,7 +7,7 @@
 "menubar.unknown" = "--";
 
 /* Popover */
-"popover.title" = "Spessu";
+"popover.title" = "DiskTrend";
 "popover.noVolumes" = "No volumes found";
 "popover.refresh" = "Refresh";
 "popover.settings" = "Settings";

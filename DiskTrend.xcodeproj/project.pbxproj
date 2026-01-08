@@ -1,0 +1,372 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07833E0EDC8C0625C1327DD8 /* DiskTrendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC35F39F79CE1F60022F751F /* DiskTrendApp.swift */; };
+		174FDD981A8264DBC04BE33B /* ColoredIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A47A59FF48C5A1CBCDC8B08 /* ColoredIcon.swift */; };
+		5496588289627C765ADA988B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A4A6009D0C9D43F597B6472 /* Localizable.strings */; };
+		7AC654EDA676E6F8F63585D8 /* DiskMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3417BC60081D1AAAF8D94840 /* DiskMonitor.swift */; };
+		81640EAAB358AD6917976584 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88F142B3598C2FDFC6952C14 /* Assets.xcassets */; };
+		AEEF4CC257EB0B99020AA3CB /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF6552C69B5534C5B958141 /* Localization.swift */; };
+		B7493120BE97CDB059DD4314 /* DiskHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37271AA03CE4578948DE14EC /* DiskHistory.swift */; };
+		D98DEC0C6EFDD9210FAA5C80 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37715083335FC4EBCE665731 /* PopoverView.swift */; };
+		E9B851354FCE5A87EADCDB83 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF52AC71BBBC7F14BD85879 /* SettingsView.swift */; };
+		EF00179C7FB059B1213EDF84 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DD9C64E1FF0B16D749E45E /* MenuBarView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		06B85A4742BC8BA2DF857E11 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		25C9D42BEE056403CB6886FA /* DiskTrend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DiskTrend.entitlements; sourceTree = "<group>"; };
+		3417BC60081D1AAAF8D94840 /* DiskMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskMonitor.swift; sourceTree = "<group>"; };
+		37271AA03CE4578948DE14EC /* DiskHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskHistory.swift; sourceTree = "<group>"; };
+		37715083335FC4EBCE665731 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		39DD9C64E1FF0B16D749E45E /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		72542303E7BA982E3DFE03F2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		772BFCE439E99896F159D685 /* DiskTrend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiskTrend.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CF52AC71BBBC7F14BD85879 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		88F142B3598C2FDFC6952C14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A47A59FF48C5A1CBCDC8B08 /* ColoredIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredIcon.swift; sourceTree = "<group>"; };
+		C5826913740A6655CF0D5F4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EC35F39F79CE1F60022F751F /* DiskTrendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskTrendApp.swift; sourceTree = "<group>"; };
+		FBF6552C69B5534C5B958141 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		221C9D3E9E12BDBC5BF4828C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				772BFCE439E99896F159D685 /* DiskTrend.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		877016CEB96495EFC4B27885 = {
+			isa = PBXGroup;
+			children = (
+				FC45436ED715C365CBFB8073 /* DiskTrend */,
+				221C9D3E9E12BDBC5BF4828C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B8395C93B0F81FC677E8FC3B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8A4A6009D0C9D43F597B6472 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FC45436ED715C365CBFB8073 /* DiskTrend */ = {
+			isa = PBXGroup;
+			children = (
+				88F142B3598C2FDFC6952C14 /* Assets.xcassets */,
+				9A47A59FF48C5A1CBCDC8B08 /* ColoredIcon.swift */,
+				37271AA03CE4578948DE14EC /* DiskHistory.swift */,
+				3417BC60081D1AAAF8D94840 /* DiskMonitor.swift */,
+				25C9D42BEE056403CB6886FA /* DiskTrend.entitlements */,
+				EC35F39F79CE1F60022F751F /* DiskTrendApp.swift */,
+				C5826913740A6655CF0D5F4C /* Info.plist */,
+				FBF6552C69B5534C5B958141 /* Localization.swift */,
+				39DD9C64E1FF0B16D749E45E /* MenuBarView.swift */,
+				37715083335FC4EBCE665731 /* PopoverView.swift */,
+				7CF52AC71BBBC7F14BD85879 /* SettingsView.swift */,
+				B8395C93B0F81FC677E8FC3B /* Resources */,
+			);
+			path = DiskTrend;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DDA2CC272F92BBC345AC171 /* DiskTrend */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5DEFA9C7A04A78AC327FBB21 /* Build configuration list for PBXNativeTarget "DiskTrend" */;
+			buildPhases = (
+				A219E620838138674E8A2241 /* Sources */,
+				B21ED9E7907ECA8ED16584F6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DiskTrend;
+			packageProductDependencies = (
+			);
+			productName = DiskTrend;
+			productReference = 772BFCE439E99896F159D685 /* DiskTrend.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A2B132B09C5A136A71DF2743 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					8DDA2CC272F92BBC345AC171 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 11FBA338EAAD725B4AE670DC /* Build configuration list for PBXProject "DiskTrend" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				fi,
+			);
+			mainGroup = 877016CEB96495EFC4B27885;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DDA2CC272F92BBC345AC171 /* DiskTrend */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B21ED9E7907ECA8ED16584F6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81640EAAB358AD6917976584 /* Assets.xcassets in Resources */,
+				5496588289627C765ADA988B /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A219E620838138674E8A2241 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				174FDD981A8264DBC04BE33B /* ColoredIcon.swift in Sources */,
+				B7493120BE97CDB059DD4314 /* DiskHistory.swift in Sources */,
+				7AC654EDA676E6F8F63585D8 /* DiskMonitor.swift in Sources */,
+				07833E0EDC8C0625C1327DD8 /* DiskTrendApp.swift in Sources */,
+				AEEF4CC257EB0B99020AA3CB /* Localization.swift in Sources */,
+				EF00179C7FB059B1213EDF84 /* MenuBarView.swift in Sources */,
+				D98DEC0C6EFDD9210FAA5C80 /* PopoverView.swift in Sources */,
+				E9B851354FCE5A87EADCDB83 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8A4A6009D0C9D43F597B6472 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				72542303E7BA982E3DFE03F2 /* en */,
+				06B85A4742BC8BA2DF857E11 /* fi */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		05504228D998BC8F8008CDAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		3E8C2651EB0692D71AC031F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		96F0923C223EC6BDDF273CD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DiskTrend/DiskTrend.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = DiskTrend/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.disktrend.app;
+				PRODUCT_NAME = DiskTrend;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A631380AE70CE2AB69F9A80D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DiskTrend/DiskTrend.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = DiskTrend/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.disktrend.app;
+				PRODUCT_NAME = DiskTrend;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11FBA338EAAD725B4AE670DC /* Build configuration list for PBXProject "DiskTrend" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E8C2651EB0692D71AC031F5 /* Debug */,
+				05504228D998BC8F8008CDAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5DEFA9C7A04A78AC327FBB21 /* Build configuration list for PBXNativeTarget "DiskTrend" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96F0923C223EC6BDDF273CD3 /* Debug */,
+				A631380AE70CE2AB69F9A80D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A2B132B09C5A136A71DF2743 /* Project object */;
+}
