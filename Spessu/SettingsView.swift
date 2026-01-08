@@ -6,14 +6,14 @@ struct SettingsView: View {
     @AppStorage("updateInterval") private var updateInterval: Double = 30
     @AppStorage("warningThreshold") private var warningThreshold: Double = 10
     @AppStorage("criticalThreshold") private var criticalThreshold: Double = 5
-    @AppStorage("showTextInMenuBar") private var showTextInMenuBar: Bool = true
+    @AppStorage("displayMode") private var displayMode: Int = 0
     @State private var launchAtLogin: Bool = false
 
     var body: some View {
         TabView {
             GeneralSettingsView(
                 updateInterval: $updateInterval,
-                showTextInMenuBar: $showTextInMenuBar,
+                displayMode: $displayMode,
                 launchAtLogin: $launchAtLogin
             )
             .tabItem {
@@ -42,13 +42,19 @@ struct SettingsView: View {
 
 struct GeneralSettingsView: View {
     @Binding var updateInterval: Double
-    @Binding var showTextInMenuBar: Bool
+    @Binding var displayMode: Int
     @Binding var launchAtLogin: Bool
     @AppStorage("decimalPlaces") private var decimalPlaces: Int = 1
     @AppStorage("iconStyle") private var iconStyle: Int = 0
 
     var body: some View {
         Form {
+            Picker(L10n.settingsDisplayMode, selection: $displayMode) {
+                ForEach(MenuBarDisplayMode.allCases, id: \.rawValue) { mode in
+                    Text(mode.name).tag(mode.rawValue)
+                }
+            }
+
             Picker(L10n.settingsIconStyle, selection: $iconStyle) {
                 ForEach(IconStyle.allCases, id: \.rawValue) { style in
                     Text(style.name).tag(style.rawValue)
@@ -61,8 +67,6 @@ struct GeneralSettingsView: View {
                 Text(L10n.settingsInterval1m).tag(60.0)
                 Text(L10n.settingsInterval5m).tag(300.0)
             }
-
-            Toggle(L10n.settingsShowText, isOn: $showTextInMenuBar)
 
             Picker(L10n.settingsDecimals, selection: $decimalPlaces) {
                 Text("0").tag(0)

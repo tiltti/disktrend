@@ -47,7 +47,10 @@
 "settings.interval.30s" = "30 sekuntia";
 "settings.interval.1m" = "1 minuutti";
 "settings.interval.5m" = "5 minuuttia";
-"settings.showText" = "Näytä vapaa tila menu barissa";
+"settings.displayMode" = "Näyttötila:";
+"display.iconAndText" = "Ikoni ja teksti";
+"display.iconOnly" = "Vain ikoni";
+"display.textOnly" = "Vain teksti";
 "settings.decimals" = "Desimaaleja:";
 "settings.launchAtLogin" = "Käynnistä kirjautuessa";
 

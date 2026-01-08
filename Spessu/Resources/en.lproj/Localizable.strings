@@ -47,7 +47,10 @@
 "settings.interval.30s" = "30 seconds";
 "settings.interval.1m" = "1 minute";
 "settings.interval.5m" = "5 minutes";
-"settings.showText" = "Show free space in menu bar";
+"settings.displayMode" = "Display mode:";
+"display.iconAndText" = "Icon and text";
+"display.iconOnly" = "Icon only";
+"display.textOnly" = "Text only";
 "settings.decimals" = "Decimal places:";
 "settings.launchAtLogin" = "Launch at login";
 

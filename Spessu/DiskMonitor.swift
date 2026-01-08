@@ -61,7 +61,7 @@ class DiskMonitor: ObservableObject {
     @Published var primaryVolume: VolumeInfo?
     @Published var lastUpdate: Date = Date()
     @Published var trend: TrendInfo?
-    @Published var showTextInMenuBar: Bool = true
+    @Published var displayMode: MenuBarDisplayMode = .iconAndText
 
     private var timer: Timer?
     private var snapshotTimer: Timer?
@@ -75,7 +75,8 @@ class DiskMonitor: ObservableObject {
     var historyManager: DiskHistoryManager?
 
     init() {
-        showTextInMenuBar = UserDefaults.standard.object(forKey: "showTextInMenuBar") as? Bool ?? true
+        let modeRaw = UserDefaults.standard.integer(forKey: "displayMode")
+        displayMode = MenuBarDisplayMode(rawValue: modeRaw) ?? .iconAndText
         // Load data synchronously immediately
         volumes = getAllVolumes()
         primaryVolume = volumes.first { $0.mountPoint == "/" }
@@ -103,7 +104,8 @@ class DiskMonitor: ObservableObject {
     }
 
     private func handleSettingsChange() {
-        showTextInMenuBar = UserDefaults.standard.object(forKey: "showTextInMenuBar") as? Bool ?? true
+        let modeRaw = UserDefaults.standard.integer(forKey: "displayMode")
+        displayMode = MenuBarDisplayMode(rawValue: modeRaw) ?? .iconAndText
         // Restart timer with new interval
         startMonitoring()
     }

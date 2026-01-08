@@ -51,13 +51,13 @@ enum L10n {
     static let settingsAbout = String(localized: "settings.about")
 
     // Settings - General
+    static let settingsDisplayMode = String(localized: "settings.displayMode")
     static let settingsIconStyle = String(localized: "settings.iconStyle")
     static let settingsUpdateInterval = String(localized: "settings.updateInterval")
     static let settingsInterval10s = String(localized: "settings.interval.10s")
     static let settingsInterval30s = String(localized: "settings.interval.30s")
     static let settingsInterval1m = String(localized: "settings.interval.1m")
     static let settingsInterval5m = String(localized: "settings.interval.5m")
-    static let settingsShowText = String(localized: "settings.showText")
     static let settingsDecimals = String(localized: "settings.decimals")
     static let settingsLaunchAtLogin = String(localized: "settings.launchAtLogin")
 
