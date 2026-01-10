@@ -8,26 +8,16 @@ struct DiskTrendApp: App {
 
     init() {
         print("[DiskTrend] Starting...")
-        updateAppearance()
-    }
-
-    private func updateAppearance() {
-        let mode = AppearanceMode(rawValue: appearanceMode) ?? .system
-        switch mode {
-        case .system:
-            NSApp.appearance = nil
-        case .light:
-            NSApp.appearance = NSAppearance(named: .aqua)
-        case .dark:
-            NSApp.appearance = NSAppearance(named: .darkAqua)
-        }
     }
 
     var body: some Scene {
         MenuBarExtra {
             PopoverView(diskMonitor: diskMonitor)
-                .onChange(of: appearanceMode) { _, _ in
-                    updateAppearance()
+                .onAppear {
+                    applyAppearance(appearanceMode)
+                }
+                .onChange(of: appearanceMode) { _, newValue in
+                    applyAppearance(newValue)
                 }
         } label: {
             MenuBarView(diskMonitor: diskMonitor)
@@ -37,5 +27,17 @@ struct DiskTrendApp: App {
         Settings {
             SettingsView(diskMonitor: diskMonitor)
         }
+    }
+}
+
+private func applyAppearance(_ mode: Int) {
+    let appearanceMode = AppearanceMode(rawValue: mode) ?? .system
+    switch appearanceMode {
+    case .system:
+        NSApp.appearance = nil
+    case .light:
+        NSApp.appearance = NSAppearance(named: .aqua)
+    case .dark:
+        NSApp.appearance = NSAppearance(named: .darkAqua)
     }
 }
