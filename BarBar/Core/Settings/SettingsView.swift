@@ -50,7 +50,7 @@ struct GeneralSettingsView: View {
 
                 Picker("Menu Bar Display", selection: $displayMode) {
                     ForEach(MenuBarDisplayMode.allCases, id: \.rawValue) { mode in
-                        Text(mode.name).tag(mode.rawValue)
+                        Label(mode.name, systemImage: mode.icon).tag(mode.rawValue)
                     }
                 }
             } header: {

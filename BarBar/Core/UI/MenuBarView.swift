@@ -15,6 +15,14 @@ enum MenuBarDisplayMode: Int, CaseIterable {
         case .textOnly: return String(localized: "display.textOnly")
         }
     }
+
+    var icon: String {
+        switch self {
+        case .iconAndText: return "text.below.photo"
+        case .iconOnly: return "photo"
+        case .textOnly: return "text.alignleft"
+        }
+    }
 }
 
 // MARK: - Menu Bar View
