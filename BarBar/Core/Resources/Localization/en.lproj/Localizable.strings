@@ -1,0 +1,66 @@
+/* App */
+"app.name" = "BarBar";
+"app.version" = "Version %@";
+
+/* Actions */
+"action.settings" = "Settings";
+"action.quit" = "Quit";
+"action.refresh" = "Refresh";
+
+/* Settings */
+"settings.title" = "Settings";
+"settings.general" = "General";
+"settings.about" = "About";
+
+/* Appearance */
+"appearance.system" = "System";
+"appearance.light" = "Light";
+"appearance.dark" = "Dark";
+
+/* Display Mode */
+"display.iconAndText" = "Icon & Text";
+"display.iconOnly" = "Icon Only";
+"display.textOnly" = "Text Only";
+
+/* Icon Styles */
+"icon.pie" = "Pie Chart";
+"icon.battery" = "Battery";
+"icon.dot" = "Dot";
+"icon.bar" = "Bar";
+
+/* Modules */
+"module.systemMonitor.name" = "System Monitor";
+"module.systemMonitor.description" = "Monitor CPU, memory, and disk usage";
+
+"module.keepAwake.name" = "Keep Awake";
+"module.keepAwake.description" = "Prevent your Mac from sleeping";
+
+"module.menuBarOrganizer.name" = "Menu Bar Tips";
+"module.menuBarOrganizer.description" = "Tips for organizing your menu bar";
+
+/* System Monitor */
+"tab.overview" = "Overview";
+"tab.disk" = "Disk";
+
+/* Keep Awake */
+"keepAwake.mode.display" = "Display";
+"keepAwake.mode.display.description" = "Keeps the display on and prevents sleep";
+"keepAwake.mode.system" = "System";
+"keepAwake.mode.system.description" = "Allows display to sleep but keeps Mac awake";
+"keepAwake.indefinite" = "Indefinite";
+"keepAwake.active" = "Active";
+"keepAwake.inactive" = "Inactive";
+"keepAwake.status.active" = "Keeping Awake";
+"keepAwake.status.inactive" = "Sleep Allowed";
+
+/* Menu Bar Organizer */
+"menuBarOrganizer.tips" = "Tips";
+"menuBarOrganizer.expanded" = "Visible";
+"menuBarOrganizer.collapsed" = "Hidden";
+
+/* Trend */
+"trend.stable" = "Stable";
+"trend.fullIn24h" = "Full within 24h!";
+"trend.fullInDays" = "Full in %d days";
+"trend.fullInDaysNormal" = "Full in ~%d days";
+"day" = "day";

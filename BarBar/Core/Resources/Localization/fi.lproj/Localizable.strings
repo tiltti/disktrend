@@ -1,0 +1,66 @@
+/* App */
+"app.name" = "BarBar";
+"app.version" = "Versio %@";
+
+/* Actions */
+"action.settings" = "Asetukset";
+"action.quit" = "Lopeta";
+"action.refresh" = "Päivitä";
+
+/* Settings */
+"settings.title" = "Asetukset";
+"settings.general" = "Yleiset";
+"settings.about" = "Tietoja";
+
+/* Appearance */
+"appearance.system" = "Järjestelmä";
+"appearance.light" = "Vaalea";
+"appearance.dark" = "Tumma";
+
+/* Display Mode */
+"display.iconAndText" = "Kuvake ja teksti";
+"display.iconOnly" = "Vain kuvake";
+"display.textOnly" = "Vain teksti";
+
+/* Icon Styles */
+"icon.pie" = "Ympyräkaavio";
+"icon.battery" = "Akku";
+"icon.dot" = "Piste";
+"icon.bar" = "Palkki";
+
+/* Modules */
+"module.systemMonitor.name" = "Järjestelmämonitori";
+"module.systemMonitor.description" = "Seuraa suorittimen, muistin ja levytilan käyttöä";
+
+"module.keepAwake.name" = "Pidä hereillä";
+"module.keepAwake.description" = "Estä Macin nukahtaminen";
+
+"module.menuBarOrganizer.name" = "Valikkopalkin vinkit";
+"module.menuBarOrganizer.description" = "Vinkkejä valikkopalkin hallintaan";
+
+/* System Monitor */
+"tab.overview" = "Yleiskatsaus";
+"tab.disk" = "Levy";
+
+/* Keep Awake */
+"keepAwake.mode.display" = "Näyttö";
+"keepAwake.mode.display.description" = "Pitää näytön päällä ja estää lepotilan";
+"keepAwake.mode.system" = "Järjestelmä";
+"keepAwake.mode.system.description" = "Sallii näytön sammumisen mutta pitää Macin hereillä";
+"keepAwake.indefinite" = "Toistaiseksi";
+"keepAwake.active" = "Aktiivinen";
+"keepAwake.inactive" = "Ei aktiivinen";
+"keepAwake.status.active" = "Pidetään hereillä";
+"keepAwake.status.inactive" = "Lepotila sallittu";
+
+/* Menu Bar Organizer */
+"menuBarOrganizer.tips" = "Vinkkejä";
+"menuBarOrganizer.expanded" = "Näkyvissä";
+"menuBarOrganizer.collapsed" = "Piilotettu";
+
+/* Trend */
+"trend.stable" = "Vakaa";
+"trend.fullIn24h" = "Täynnä 24 tunnin sisällä!";
+"trend.fullInDays" = "Täynnä %d päivässä";
+"trend.fullInDaysNormal" = "Täynnä ~%d päivässä";
+"day" = "päivä";
